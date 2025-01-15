@@ -3,6 +3,7 @@ name = "aula19-bootcamp"
 version = "0.1.0"
 description = ""
 authors = ["Lucas"]
+packages = [{include = "src"}]
 readme = "README.md"
 
 [tool.poetry.dependencies]
