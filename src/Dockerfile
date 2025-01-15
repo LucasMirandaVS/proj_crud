@@ -1,19 +1,21 @@
-FROM python:3.12
+# Use uma imagem base com Python
+FROM python:3.12-slim
 
-# Instalando o Poetry
+# Instale o Poetry
 RUN pip install poetry
 
-# Copiar o conteúdo do diretório atual para o contêiner
-COPY . /src
+# Copie os arquivos necessários para o container
+WORKDIR /app
+COPY pyproject.toml poetry.lock /app/
 
-# Definir o diretório de trabalho
-WORKDIR /src
+# Instale as dependências
+RUN poetry install --no-root
 
-# Instalar as dependências do projeto com Poetry
-RUN poetry install
+# Copie o restante dos arquivos
+COPY . /app
 
-# Expor a porta em que a aplicação estará escutando
-EXPOSE 8501
+# Exponha a porta da aplicação
+EXPOSE 8000
 
-# Definir o entrypoint para executar o servidor Uvicorn
-ENTRYPOINT ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8501"]
+# Comando para iniciar a aplicação
+CMD ["poetry", "run", "python", "main.py"]
